@@ -23,7 +23,7 @@
 #define B_RW 	0x02		
 #define B_RS 	0x01				
 		/*LCD-BUSY-bitens address och andra LCD relaterade saker*/
-#define LCD_BUSY ((volatile unsigned char*)PORT_BASE_E+0x01)
+#define LCD_BUSY 		0x80
 #define LCD_OFF 		0x3E
 #define LCD_ON			0x3F
 #define LCD_DISP_START	0xC
@@ -116,7 +116,7 @@ void graphic_wait_ready(void){
 		delay_500ns();
 		graphic_ctrl_bit_clear(B_E);
 		delay_500ns();
-		if( (*LCD_BUSY & 0x80) == 0x80)
+		if( (LCD_BUSY & 0x80) == 0x80)
 			break;
 		
 	}
@@ -178,29 +178,54 @@ void graphic_write_command(uint8_t command, uint8_t controller){
 	graphic_ctrl_bit_clear( B_RW );
 	graphic_write( command, controller );
 }
-void graphics_write_data( uint8_t data, uint8_t controller ){
+void graphic_write_data( uint8_t data, uint8_t controller ){
 	graphic_ctrl_bit_clear( B_E );
 	select_controller( controller );
 	graphic_ctrl_bit_set( B_RS );
 	graphic_ctrl_bit_clear( B_RW );
 	graphic_write( data, controller );
 }
+void graphic_clear_screen(void){
+	for( int i = 0; i < 7; i++){											//KAN SKAPA PROBLEM DÅ I ALDRiG ÄR 7, SAMMA MED K
+		graphic_write_command( LCD_SET_PAGE | i, B_CS1 | B_CS2 );
+		graphic_write_command( LCD_SET_ADD	| 0, B_CS1 | B_CS2 );
+		for(int k = 0; k < 63; k++){
+			graphic_write_data( 0, B_CS1 | B_CS2 );
+		}
+	}
+}
+
 void graphic_initialize(void){
 	graphic_ctrl_bit_set(B_E);
 	delay_micro(10);
+	
 	graphic_ctrl_bit_clear(B_CS1);
 	graphic_ctrl_bit_clear(B_CS2);
 	graphic_ctrl_bit_clear(B_RST);
 	graphic_ctrl_bit_clear(B_E);
 	delay_milli(30);
+	
 	graphic_ctrl_bit_set(B_RST);
-	graphics_write_command(LCD_OFF,)
+	graphic_write_command(LCD_OFF, B_CS1 | B_CS2);
+	graphic_write_command(LCD_ON, B_CS1 | B_CS2);
+	graphic_write_command(LCD_DISP_START, B_CS1 | B_CS2);
+	graphic_write_command(LCD_SET_ADD, B_CS1 | B_CS2);
+	graphic_write_command(LCD_SET_PAGE, B_CS1 | B_CS2);
+	select_controller(0);
 }
 void init_app(void){
 	*PORT_MODER = 0x55555555;
 }
 
 int main(void){
+	init_app();
+	graphic_initialize();
+#ifndef SIMULATOR
+	graphic_clear_screen();
+#endif
+	graphic_write_command( LCD_SET_ADD | 10, B_CS1 | B_CS2 );
+	graphic_write_command( LCD_SET_PAGE | 1, B_CS1 | B_CS2 );
+	graphic_write_command( 0xFF, B_CS1 | B_CS2 );
 	return 0;
 	
 }
