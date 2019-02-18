@@ -3,7 +3,8 @@
   <Project Name="delay" Path="delay/delay.project" Active="No"/>
   <Project Name="upg57_2" Path="upg57_2/upg57_2.project" Active="No"/>
   <Project Name="7seg" Path="7seg/7seg.project" Active="No"/>
-  <Project Name="asciidisplay" Path="asciidisplay/asciidisplay.project" Active="Yes"/>
+  <Project Name="asciidisplay" Path="asciidisplay/asciidisplay.project" Active="No"/>
+  <Project Name="graphicdisplay" Path="graphicdisplay/graphicdisplay.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment>GccArmDir = /usr/local/gcc-arm
@@ -12,6 +13,7 @@
       <Project Name="asciidisplay" ConfigName="Debug"/>
       <Project Name="upg57_2" ConfigName="Debug"/>
       <Project Name="7seg" ConfigName="Debug"/>
+      <Project Name="graphicdisplay" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Environment/>
@@ -19,6 +21,7 @@
       <Project Name="asciidisplay" ConfigName="Release"/>
       <Project Name="upg57_2" ConfigName="Release"/>
       <Project Name="7seg" ConfigName="Release"/>
+      <Project Name="graphicdisplay" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>

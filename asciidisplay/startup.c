@@ -140,7 +140,7 @@ void ascii_init(void){
 	ascii_command(0x01);	//Clear Display
 	ascii_command(0x06);	//Entry mode set
 }
-int main(void){
+int main(int argc, char **argv){
 	char *s;
 	char test1[] = "Alfanumerisk ";
 	char test2[] = "Display - test";

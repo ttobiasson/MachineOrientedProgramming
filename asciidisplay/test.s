@@ -1002,10 +1002,10 @@
  886              		.fpu softvfp
  888              	main:
  889              	.LFB17:
- 143:/home/tom/Documents/WORK/MachineOrientedProgramming/asciidisplay/startup.c **** int main(void){
+ 143:/home/tom/Documents/WORK/MachineOrientedProgramming/asciidisplay/startup.c **** int main(int argc, char **argv){
  890              		.loc 1 143 0
  891              		.cfi_startproc
- 892              		@ args = 0, pretend = 0, frame = 40
+ 892              		@ args = 0, pretend = 0, frame = 48
  893              		@ frame_needed = 1, uses_anonymous_args = 0
  894 033a B0B5     		push	{r4, r5, r7, lr}
  895              		.cfi_def_cfa_offset 16
@@ -1013,110 +1013,114 @@
  897              		.cfi_offset 5, -12
  898              		.cfi_offset 7, -8
  899              		.cfi_offset 14, -4
- 900 033c 8AB0     		sub	sp, sp, #40
- 901              		.cfi_def_cfa_offset 56
+ 900 033c 8CB0     		sub	sp, sp, #48
+ 901              		.cfi_def_cfa_offset 64
  902 033e 00AF     		add	r7, sp, #0
  903              		.cfi_def_cfa_register 7
+ 904 0340 7860     		str	r0, [r7, #4]
+ 905 0342 3960     		str	r1, [r7]
  144:/home/tom/Documents/WORK/MachineOrientedProgramming/asciidisplay/startup.c **** 	char *s;
  145:/home/tom/Documents/WORK/MachineOrientedProgramming/asciidisplay/startup.c **** 	char test1[] = "Alfanumerisk ";
- 904              		.loc 1 145 0
- 905 0340 1424     		movs	r4, #20
- 906 0342 3B19     		adds	r3, r7, r4
- 907 0344 1C4A     		ldr	r2, .L51
- 908 0346 23CA     		ldmia	r2!, {r0, r1, r5}
- 909 0348 23C3     		stmia	r3!, {r0, r1, r5}
- 910 034a 1288     		ldrh	r2, [r2]
- 911 034c 1A80     		strh	r2, [r3]
+ 906              		.loc 1 145 0
+ 907 0344 1C24     		movs	r4, #28
+ 908 0346 3B19     		adds	r3, r7, r4
+ 909 0348 1D4A     		ldr	r2, .L51
+ 910 034a 23CA     		ldmia	r2!, {r0, r1, r5}
+ 911 034c 23C3     		stmia	r3!, {r0, r1, r5}
+ 912 034e 1288     		ldrh	r2, [r2]
+ 913 0350 1A80     		strh	r2, [r3]
  146:/home/tom/Documents/WORK/MachineOrientedProgramming/asciidisplay/startup.c **** 	char test2[] = "Display - test";
- 912              		.loc 1 146 0
- 913 034e 3B1D     		adds	r3, r7, #4
- 914 0350 1A4A     		ldr	r2, .L51+4
- 915 0352 23CA     		ldmia	r2!, {r0, r1, r5}
- 916 0354 23C3     		stmia	r3!, {r0, r1, r5}
- 917 0356 1188     		ldrh	r1, [r2]
- 918 0358 1980     		strh	r1, [r3]
- 919 035a 9278     		ldrb	r2, [r2, #2]
- 920 035c 9A70     		strb	r2, [r3, #2]
+ 914              		.loc 1 146 0
+ 915 0352 0C23     		movs	r3, #12
+ 916 0354 FB18     		adds	r3, r7, r3
+ 917 0356 1B4A     		ldr	r2, .L51+4
+ 918 0358 23CA     		ldmia	r2!, {r0, r1, r5}
+ 919 035a 23C3     		stmia	r3!, {r0, r1, r5}
+ 920 035c 1188     		ldrh	r1, [r2]
+ 921 035e 1980     		strh	r1, [r3]
+ 922 0360 9278     		ldrb	r2, [r2, #2]
+ 923 0362 9A70     		strb	r2, [r3, #2]
  147:/home/tom/Documents/WORK/MachineOrientedProgramming/asciidisplay/startup.c **** 	  
  148:/home/tom/Documents/WORK/MachineOrientedProgramming/asciidisplay/startup.c **** 	init_app();
- 921              		.loc 1 148 0
- 922 035e FFF7FEFF 		bl	init_app
+ 924              		.loc 1 148 0
+ 925 0364 FFF7FEFF 		bl	init_app
  149:/home/tom/Documents/WORK/MachineOrientedProgramming/asciidisplay/startup.c **** 	ascii_init();
- 923              		.loc 1 149 0
- 924 0362 FFF7FEFF 		bl	ascii_init
+ 926              		.loc 1 149 0
+ 927 0368 FFF7FEFF 		bl	ascii_init
  150:/home/tom/Documents/WORK/MachineOrientedProgramming/asciidisplay/startup.c **** 	ascii_gotoxy(1,1);
- 925              		.loc 1 150 0
- 926 0366 0121     		movs	r1, #1
- 927 0368 0120     		movs	r0, #1
- 928 036a FFF7FEFF 		bl	ascii_gotoxy
+ 928              		.loc 1 150 0
+ 929 036c 0121     		movs	r1, #1
+ 930 036e 0120     		movs	r0, #1
+ 931 0370 FFF7FEFF 		bl	ascii_gotoxy
  151:/home/tom/Documents/WORK/MachineOrientedProgramming/asciidisplay/startup.c **** 	s = test1;
- 929              		.loc 1 151 0
- 930 036e 3B19     		adds	r3, r7, r4
- 931 0370 7B62     		str	r3, [r7, #36]
+ 932              		.loc 1 151 0
+ 933 0374 3B19     		adds	r3, r7, r4
+ 934 0376 FB62     		str	r3, [r7, #44]
  152:/home/tom/Documents/WORK/MachineOrientedProgramming/asciidisplay/startup.c **** 	
  153:/home/tom/Documents/WORK/MachineOrientedProgramming/asciidisplay/startup.c **** 	while(*s)
- 932              		.loc 1 153 0
- 933 0372 06E0     		b	.L46
- 934              	.L47:
+ 935              		.loc 1 153 0
+ 936 0378 06E0     		b	.L46
+ 937              	.L47:
  154:/home/tom/Documents/WORK/MachineOrientedProgramming/asciidisplay/startup.c **** 		ascii_write_char(*s++);
- 935              		.loc 1 154 0
- 936 0374 7B6A     		ldr	r3, [r7, #36]
- 937 0376 5A1C     		adds	r2, r3, #1
- 938 0378 7A62     		str	r2, [r7, #36]
- 939 037a 1B78     		ldrb	r3, [r3]
- 940 037c 1800     		movs	r0, r3
- 941 037e FFF7FEFF 		bl	ascii_write_char
- 942              	.L46:
+ 938              		.loc 1 154 0
+ 939 037a FB6A     		ldr	r3, [r7, #44]
+ 940 037c 5A1C     		adds	r2, r3, #1
+ 941 037e FA62     		str	r2, [r7, #44]
+ 942 0380 1B78     		ldrb	r3, [r3]
+ 943 0382 1800     		movs	r0, r3
+ 944 0384 FFF7FEFF 		bl	ascii_write_char
+ 945              	.L46:
  153:/home/tom/Documents/WORK/MachineOrientedProgramming/asciidisplay/startup.c **** 		ascii_write_char(*s++);
- 943              		.loc 1 153 0
- 944 0382 7B6A     		ldr	r3, [r7, #36]
- 945 0384 1B78     		ldrb	r3, [r3]
- 946 0386 002B     		cmp	r3, #0
- 947 0388 F4D1     		bne	.L47
+ 946              		.loc 1 153 0
+ 947 0388 FB6A     		ldr	r3, [r7, #44]
+ 948 038a 1B78     		ldrb	r3, [r3]
+ 949 038c 002B     		cmp	r3, #0
+ 950 038e F4D1     		bne	.L47
  155:/home/tom/Documents/WORK/MachineOrientedProgramming/asciidisplay/startup.c **** 	ascii_gotoxy(1,2);
- 948              		.loc 1 155 0
- 949 038a 0221     		movs	r1, #2
- 950 038c 0120     		movs	r0, #1
- 951 038e FFF7FEFF 		bl	ascii_gotoxy
+ 951              		.loc 1 155 0
+ 952 0390 0221     		movs	r1, #2
+ 953 0392 0120     		movs	r0, #1
+ 954 0394 FFF7FEFF 		bl	ascii_gotoxy
  156:/home/tom/Documents/WORK/MachineOrientedProgramming/asciidisplay/startup.c **** 	s = test2;
- 952              		.loc 1 156 0
- 953 0392 3B1D     		adds	r3, r7, #4
- 954 0394 7B62     		str	r3, [r7, #36]
+ 955              		.loc 1 156 0
+ 956 0398 0C23     		movs	r3, #12
+ 957 039a FB18     		adds	r3, r7, r3
+ 958 039c FB62     		str	r3, [r7, #44]
  157:/home/tom/Documents/WORK/MachineOrientedProgramming/asciidisplay/startup.c **** 	
  158:/home/tom/Documents/WORK/MachineOrientedProgramming/asciidisplay/startup.c **** 	while(*s)
- 955              		.loc 1 158 0
- 956 0396 06E0     		b	.L48
- 957              	.L49:
+ 959              		.loc 1 158 0
+ 960 039e 06E0     		b	.L48
+ 961              	.L49:
  159:/home/tom/Documents/WORK/MachineOrientedProgramming/asciidisplay/startup.c **** 		ascii_write_char(*s++);
- 958              		.loc 1 159 0
- 959 0398 7B6A     		ldr	r3, [r7, #36]
- 960 039a 5A1C     		adds	r2, r3, #1
- 961 039c 7A62     		str	r2, [r7, #36]
- 962 039e 1B78     		ldrb	r3, [r3]
- 963 03a0 1800     		movs	r0, r3
- 964 03a2 FFF7FEFF 		bl	ascii_write_char
- 965              	.L48:
+ 962              		.loc 1 159 0
+ 963 03a0 FB6A     		ldr	r3, [r7, #44]
+ 964 03a2 5A1C     		adds	r2, r3, #1
+ 965 03a4 FA62     		str	r2, [r7, #44]
+ 966 03a6 1B78     		ldrb	r3, [r3]
+ 967 03a8 1800     		movs	r0, r3
+ 968 03aa FFF7FEFF 		bl	ascii_write_char
+ 969              	.L48:
  158:/home/tom/Documents/WORK/MachineOrientedProgramming/asciidisplay/startup.c **** 		ascii_write_char(*s++);
- 966              		.loc 1 158 0
- 967 03a6 7B6A     		ldr	r3, [r7, #36]
- 968 03a8 1B78     		ldrb	r3, [r3]
- 969 03aa 002B     		cmp	r3, #0
- 970 03ac F4D1     		bne	.L49
+ 970              		.loc 1 158 0
+ 971 03ae FB6A     		ldr	r3, [r7, #44]
+ 972 03b0 1B78     		ldrb	r3, [r3]
+ 973 03b2 002B     		cmp	r3, #0
+ 974 03b4 F4D1     		bne	.L49
  160:/home/tom/Documents/WORK/MachineOrientedProgramming/asciidisplay/startup.c **** 	return 0;
- 971              		.loc 1 160 0
- 972 03ae 0023     		movs	r3, #0
+ 975              		.loc 1 160 0
+ 976 03b6 0023     		movs	r3, #0
  161:/home/tom/Documents/WORK/MachineOrientedProgramming/asciidisplay/startup.c **** }...
- 973              		.loc 1 161 0
- 974 03b0 1800     		movs	r0, r3
- 975 03b2 BD46     		mov	sp, r7
- 976 03b4 0AB0     		add	sp, sp, #40
- 977              		@ sp needed
- 978 03b6 B0BD     		pop	{r4, r5, r7, pc}
- 979              	.L52:
- 980              		.align	2
- 981              	.L51:
- 982 03b8 00000000 		.word	.LC0
- 983 03bc 10000000 		.word	.LC2
- 984              		.cfi_endproc
- 985              	.LFE17:
- 987              	.Letext0:
+ 977              		.loc 1 161 0
+ 978 03b8 1800     		movs	r0, r3
+ 979 03ba BD46     		mov	sp, r7
+ 980 03bc 0CB0     		add	sp, sp, #48
+ 981              		@ sp needed
+ 982 03be B0BD     		pop	{r4, r5, r7, pc}
+ 983              	.L52:
+ 984              		.align	2
+ 985              	.L51:
+ 986 03c0 00000000 		.word	.LC0
+ 987 03c4 10000000 		.word	.LC2
+ 988              		.cfi_endproc
+ 989              	.LFE17:
+ 991              	.Letext0:
