@@ -3,10 +3,10 @@
 ## any manual changes will be erased      
 ##
 ## Debug
-ProjectName            :=7seg
+ProjectName            :=upg57
 ConfigurationName      :=Debug
 WorkspacePath          :=/home/tom/Documents/WORK/MachineOrientedProgramming
-ProjectPath            :=/home/tom/Documents/WORK/MachineOrientedProgramming/7seg
+ProjectPath            :=/home/tom/Documents/WORK/MachineOrientedProgramming/upg57
 IntermediateDirectory  :=./Debug
 OutDir                 := $(IntermediateDirectory)
 CurrentFileName        :=
@@ -32,7 +32,7 @@ Preprocessors          :=
 ObjectSwitch           :=-o 
 ArchiveOutputSwitch    := 
 PreprocessOnlySwitch   :=-E
-ObjectsFileList        :="7seg.txt"
+ObjectsFileList        :="upg57.txt"
 PCHCompileFlags        :=
 MakeDirCommand         :=mkdir -p
 LinkOptions            :=  -T$(ProjectPath)/md407-ram.x -L$(ARM_V6LIB) -L$(ARM_GCC_V6LIB) -nostdlib
@@ -85,8 +85,8 @@ $(OutputFile): $(IntermediateDirectory)/.d $(Objects)
 
 PostBuild:
 	@echo Executing Post Build commands ...
-	$(GccArmDir)/bin/arm-none-eabi-objcopy -S -O srec  ./Debug/7seg.elf ./Debug/7seg.s19
-	$(GccArmDir)/bin/arm-none-eabi-objdump -D -S ./Debug/7seg.elf > ./Debug/7seg.dass
+	$(GccArmDir)/bin/arm-none-eabi-objcopy -S -O srec  ./Debug/upg57.elf ./Debug/upg57.s19
+	$(GccArmDir)/bin/arm-none-eabi-objdump -D -S ./Debug/upg57.elf > ./Debug/upg57.dass
 	@echo Done
 
 MakeIntermediateDirs:
@@ -103,7 +103,7 @@ PreBuild:
 ## Objects
 ##
 $(IntermediateDirectory)/startup.c$(ObjectSuffix): startup.c $(IntermediateDirectory)/startup.c$(DependSuffix)
-	$(CC) $(SourceSwitch) "/home/tom/Documents/WORK/MachineOrientedProgramming/7seg/startup.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/startup.c$(ObjectSuffix) $(IncludePath)
+	$(CC) $(SourceSwitch) "/home/tom/Documents/WORK/MachineOrientedProgramming/upg57/startup.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/startup.c$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/startup.c$(DependSuffix): startup.c
 	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/startup.c$(ObjectSuffix) -MF$(IntermediateDirectory)/startup.c$(DependSuffix) -MM startup.c
 

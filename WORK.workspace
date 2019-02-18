@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Workspace Name="WORK" Database="" Version="10.0.0">
   <Project Name="delay" Path="delay/delay.project" Active="No"/>
-  <Project Name="upg57" Path="upg57/upg57.project" Active="No"/>
   <Project Name="upg57_2" Path="upg57_2/upg57_2.project" Active="No"/>
-  <Project Name="7seg" Path="7seg/7seg.project" Active="Yes"/>
+  <Project Name="7seg" Path="7seg/7seg.project" Active="No"/>
+  <Project Name="asciidisplay" Path="asciidisplay/asciidisplay.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment>GccArmDir = /usr/local/gcc-arm
 </Environment>
       <Project Name="delay" ConfigName="Debug"/>
-      <Project Name="upg57" ConfigName="Debug"/>
+      <Project Name="asciidisplay" ConfigName="Debug"/>
       <Project Name="upg57_2" ConfigName="Debug"/>
       <Project Name="7seg" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Environment/>
       <Project Name="delay" ConfigName="Release"/>
-      <Project Name="upg57" ConfigName="Release"/>
+      <Project Name="asciidisplay" ConfigName="Release"/>
       <Project Name="upg57_2" ConfigName="Release"/>
       <Project Name="7seg" ConfigName="Release"/>
     </WorkspaceConfiguration>

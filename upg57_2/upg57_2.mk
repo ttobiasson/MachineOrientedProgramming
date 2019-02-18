@@ -5,15 +5,15 @@
 ## Debug
 ProjectName            :=upg57_2
 ConfigurationName      :=Debug
-WorkspacePath          :=/home/tom/Documents/WORK
-ProjectPath            :=/home/tom/Documents/WORK/upg57_2
+WorkspacePath          :=/home/tom/Documents/WORK/MachineOrientedProgramming
+ProjectPath            :=/home/tom/Documents/WORK/MachineOrientedProgramming/upg57_2
 IntermediateDirectory  :=./Debug
 OutDir                 := $(IntermediateDirectory)
 CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=Tom
-Date                   :=14/02/19
+Date                   :=18/02/19
 CodeLitePath           :=/home/tom/.codelite
 LinkerName             :=/usr/local/gcc-arm/bin/arm-none-eabi-g++
 SharedObjectLinkerName :=/usr/local/gcc-arm/bin/arm-none-eabi-g++ -shared -fPIC
@@ -103,7 +103,7 @@ PreBuild:
 ## Objects
 ##
 $(IntermediateDirectory)/startup.c$(ObjectSuffix): startup.c $(IntermediateDirectory)/startup.c$(DependSuffix)
-	$(CC) $(SourceSwitch) "/home/tom/Documents/WORK/upg57_2/startup.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/startup.c$(ObjectSuffix) $(IncludePath)
+	$(CC) $(SourceSwitch) "/home/tom/Documents/WORK/MachineOrientedProgramming/upg57_2/startup.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/startup.c$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/startup.c$(DependSuffix): startup.c
 	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/startup.c$(ObjectSuffix) -MF$(IntermediateDirectory)/startup.c$(DependSuffix) -MM startup.c
 

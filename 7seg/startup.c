@@ -8,7 +8,6 @@
  #define GPIO_D_OTYPER_HIGH ((volatile unsigned char*)   GPIO_D_BASE+0x05)
  #define GPIO_D_PUPDR_HIGH ((volatile unsigned short*)     GPIO_D_BASE+0x0E)
  #define GPIO_D_IDR_HIGH ((volatile unsigned char*)     GPIO_D_BASE+0x11)
- #define GPIO_D_IDR_LOW  ((volatile unsigned short*)     GPIO_D_BASE+0x10)
  #define GPIO_D_ODR_HIGH ((volatile unsigned char*)     GPIO_D_BASE+0x15)
  #define GPIO_D_ODR_LOW ((volatile unsigned char*)     GPIO_D_BASE+0x14)
  

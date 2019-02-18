@@ -6,7 +6,6 @@
  #define PORT_BASE_E 0x40021000
 			/* Definiera word-adresser för initiering*/
  #define portModer ((volatile unsigned int*)PORT_BASE_E)
- #define portModerHigh ((volatile unsigned char*)PORT_BASE_E+0x01)
  #define portOtyper ((volatile unsigned int*) PORT_BASE_E+0x04)
  #define Ospeedr    ((volatile unsigned int*) PORT_BASE_E+0x08)
  #define portPupdr  ((volatile unsigned int*) PORT_BASE_E+0x0C)
@@ -42,7 +41,13 @@ void init_app(){
     *portOtyper =0x00000000;
     *Ospeedr    =0x55555555;
 }
+void ascii_init(void){
+    ascii_write_cmd(0x38);
+    ascii_write_cmd(0x0E);
+    ascii_clear_cmd(0x01);
+    ascii_write_cmd(0x06);
 
+}
 void delay_250ns(void){
     *STK_CTRL = 0;
     *STK_LOAD = ((168/4)-1);
@@ -51,7 +56,6 @@ void delay_250ns(void){
     while( (*STK_CTRL & 0x10000)== 0){}
     *STK_CTRL = 0;
 }
-
 void delay_micro(unsigned int us){
     while(us > 0){
         delay_250ns();
@@ -61,7 +65,6 @@ void delay_micro(unsigned int us){
         us--;
     }
 }
-
 void delay_milli(unsigned int ms){
 
     while(ms--){
@@ -69,70 +72,55 @@ void delay_milli(unsigned int ms){
     }
     
 }
-
-
 void ascii_ctrl_bit_set( unsigned char x){
-    unsigned char c;
-    c = *portOdrLow;
-    c |= (B_SELECT | x);
-    *portOdrLow = c;
+    *portOdrLow |= (B_SELECT | x);
 }
-
 void ascii_ctrl_bit_clear(unsigned char x){
-    unsigned char c;
-    c = *portOdrLow;
-    c &= (B_SELECT | ~x);
-    *portOdrLow = c;
+    *portOdrLow &= (B_SELECT | ~x);
 }
-
+void ascii_write_controller( unsigned char c ){
+	delay_250ns();
+    ascii_ctrl_bit_set( *B_E );   // Synchronization signal =1
+    *portOdrHigh = c;            // Ger kommandot till porten
+    delay_250ns();
+    ascii_ctrl_bit_clear( *B_E ); // Stänger av synchronizatoin.
+    delay_250ns();
+}
 unsigned char ascii_read_controller( void ){
     unsigned char c;
-    ascii_ctrl_bit_set( B_E );
+    ascii_ctrl_bit_set( *B_E );
     delay_250ns();
     delay_250ns();
     c = *portIdrHigh;
-    ascii_ctrl_bit_clear( B_E );
+    ascii_ctrl_bit_clear( *B_E );
     return c;   
 }
-
-void ascii_write_controller( unsigned char c ){
-	delay_250ns();
-    ascii_ctrl_bit_set( B_E );   // Synchronization signal =1
-    *portOdrHigh = c;            // Ger kommandot till porten
-    delay_250ns();
-    ascii_ctrl_bit_clear( B_E ); // Stänger av synchronizatoin.
-    delay_250ns();
-}
-
-unsigned char ascii_read_status(){
-    unsigned char c;
-    *portModer = 0x0000;   //GÖR OM PORTEN TILL INGÅNGAR
-    ascii_ctrl_bit_set( B_RW );   // ETT STÄLL READ/WRITE
-    ascii_ctrl_bit_clear( B_RS );  //NOLLSTÄLL READ/ SET
-    c = ascii_read_controller( );
-    *portModer = 0x5555;    //GÖR OM PORTEN TILL UTGÅNGAR
-return c;
-}
-
 void ascii_write_cmd ( unsigned char command){
-    ascii_ctrl_bit_clear(B_RS);
-    ascii_ctrl_bit_clear(B_RW);
+    ascii_ctrl_bit_clear(*B_RS);
+    ascii_ctrl_bit_clear(*B_RW);
     ascii_write_controller(command);
 }
-
 void ascii_write_data (unsigned char data){
-    ascii_ctrl_bit_clear(B_RW);
-    ascii_ctrl_bit_set(B_RS);
+    ascii_ctrl_bit_clear(*B_RW);
+    ascii_ctrl_bit_set(*B_RS);
     ascii_write_controller(data);
 }
-
+unsigned char ascii_read_status(){
+    unsigned char c;
+    *portModer = 0x00000000;   //GÖR OM PORTEN TILL INGÅNGAR
+    ascii_ctrl_bit_set(*B_RW );   // ETT STÄLL READ/WRITE
+    ascii_ctrl_bit_clear(*B_RS );  //NOLLSTÄLL READ/ SET
+    c = ascii_read_controller( );
+    *portModer = 0x55555555;    //GÖR OM PORTEN TILL UTGÅNGAR
+return c;
+}
 void ascii_read_data(void){
     unsigned char c;
-    *portModer = 0x0000;
-    ascii_ctrl_bit_set(B_RS);
-    ascii_ctrl_bit_set(B_RW);
+    *portModer = 0x00000000;
+    ascii_ctrl_bit_set(*B_RS);
+    ascii_ctrl_bit_set(*B_RW);
     c = ascii_read_controller();
-    *portModer = 0x5555;
+    *portModer = 0x55555555;
     return c;
 }
 void ascii_clear_cmd(unsigned char cmd){
@@ -142,16 +130,6 @@ void ascii_clear_cmd(unsigned char cmd){
         delay_milli(2);
     }
 }
-
-void ascii_init(void){
-    ascii_write_cmd(0x38);
-    ascii_write_cmd(0x0E);
-    ascii_clear_cmd(0x01);
-    ascii_write_cmd(0x04);
-
-}
-
-
 void ascii_gotoxy( unsigned int x, unsigned int y) {
     unsigned char address = x-1;
     if(y != 1){
@@ -168,7 +146,6 @@ void ascii_write_char( unsigned char c){
     }
     
 }
-
 void main(void){
     char *s;
     char test1[] = "Alfanumerisk";
@@ -180,7 +157,7 @@ void main(void){
     s = test1;
 	
     while (*s){
-        ascii_write_char( *s ++);
+        ascii_write_char(*s++);
     }
     ascii_gotoxy(1,2);
     s = test2;
