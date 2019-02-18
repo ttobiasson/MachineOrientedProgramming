@@ -1,2 +1,0 @@
-# MachineOrientedProgramming
-C-Programming
