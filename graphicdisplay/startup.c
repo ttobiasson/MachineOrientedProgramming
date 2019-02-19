@@ -184,15 +184,15 @@ void graphic_write_data( uint8_t data, uint8_t controller ){
 	graphic_ctrl_bit_clear( B_RW );
 	graphic_write( data, controller );
 }
-//void graphic_clear_screen(void){
-//	for( int i = 0; i < 7; i++){											//KAN SKAPA PROBLEM DÅ I ALDRiG ÄR 7, SAMMA MED K
-//		graphic_write_command( LCD_SET_PAGE | i, B_CS1 | B_CS2 );
-//		graphic_write_command( LCD_SET_ADD	| 0, B_CS1 | B_CS2 );
-//		for(int k = 0; k < 63; k++){
-//			graphic_write_data( 0, B_CS1 | B_CS2 );
-//		}
-//	}
-//}
+void graphic_clear_screen(void){
+	for( int i = 0; i < 7; i++){											//KAN SKAPA PROBLEM DÅ I ALDRiG ÄR 7, SAMMA MED K
+		graphic_write_command( LCD_SET_PAGE | i, B_CS1 | B_CS2 );
+		graphic_write_command( LCD_SET_ADD	| 0, B_CS1 | B_CS2 );
+		for(int k = 0; k < 63; k++){
+			graphic_write_data( 0, B_CS1 | B_CS2 );
+		}
+	}
+}
 
 void graphic_initialize(void){
 	graphic_ctrl_bit_set(B_E);
@@ -222,7 +222,7 @@ int main(void){
 	//graphic_clear_screen();
 	graphic_write_command( LCD_SET_ADD | 10, B_CS1 | B_CS2 );
 	graphic_write_command( LCD_SET_PAGE | 1, B_CS1 | B_CS2 );
-	graphic_write_command( 0xFF, B_CS1 | B_CS2 );
+	graphic_write_data( 0xFF, B_CS1 | B_CS2 );
 	return 0;
 	
 }
