@@ -33,9 +33,8 @@
 #define STK_VAL  ((volatile unsigned int*)(0xE000E018))
 void startup(void) __attribute__((naked)) __attribute__((section (".start_section")) );
 
-void startup ( void )
-{
-asm volatile(
+void startup ( void ){
+__asm volatile(
 	" LDR R0,=0x2001C000\n"		/* set stack */
 	" MOV SP,R0\n"
 	" BL main\n"				/* call main */
@@ -69,6 +68,31 @@ void delay_milli(unsigned int ms){
     
 }
 typedef unsigned char uint8_t;
+typedef struct tPoint{
+	unsigned char x;
+	unsigned char y;
+}POINT;
+#define MAX_POINTS 20
+typedef struct tGeometry{
+	int numPoints;
+	int sizeX;
+	int sizeY;
+	POINT px[ MAX_POINTS ];
+} GEOMETRY, *PGEOMETRY;
+GEOMETRY ball_geometry = {
+	12,	//numpoints
+	4,4, //size x and size y
+	{{0,1},{0,2},{1,0},{1,1},{1,2},{1,3},{2,0},{2,1},{2,2},{2,3},{3,1},{3,2}}
+};
+typedef struct tObj{
+	PGEOMETRY geo;
+	int dirx, diry;
+	int posx, posy;
+	void (* draw ) (struct tObj *);
+	void (* clear ) (struct tObj *);
+	void (* move ) (struct tObj *);
+	void (* set_speed ) (struct tObj *, int, int);
+}OBJECT, *POBJECT;
 
 void graphic_ctrl_bit_set(uint8_t x){
 	*PORT_ODR_LOW |= x;
@@ -193,7 +217,43 @@ void graphic_clear_screen(void){
 		}
 	}
 }
-
+void pixel(unsigned x, unsigned y, unsigned set){
+	uint8_t mask, c, controller;
+	int index;
+	
+	if(x < 1 || y < 1 || x > 128 || y > 64)
+		return;
+	index = (y-1)/8;
+	switch((y-1)%8){
+		case 0: mask = 1; break;
+		case 1:	mask = 2; break;
+		case 2: mask = 4; break;
+		case 3: mask = 8; break;
+		case 4: mask = 0x10; break;
+		case 5: mask = 0x20; break;
+		case 6: mask = 0x40; break;
+		case 7: mask = 0x80; break;
+	}
+	if(set == 0)
+		mask = ~mask;
+	if(x > 64){
+		controller = B_CS2;
+		x = x-65;
+	}else{ 
+		controller = B_CS1;
+		x = x-1;	
+	}
+	graphic_write_command(LCD_SET_ADD | x, controller);
+	graphic_write_command(LCD_SET_PAGE | index, controller);
+	c = graphic_read_data(controller);
+	graphic_write_command(LCD_SET_ADD | x, controller);
+	if(set){
+		mask = mask | c;
+	}else{
+		mask = mask & c;
+	}
+	graphic_write_data(mask, controller);
+}
 void graphic_initialize(void){
 	graphic_ctrl_bit_set(B_E);
 	delay_micro(10);
@@ -217,12 +277,20 @@ void init_app(void){
 }
 
 int main(void){
+	unsigned i;
 	init_app();
 	graphic_initialize();
-	//graphic_clear_screen();
-	graphic_write_command( LCD_SET_ADD | 10, B_CS1 | B_CS2 );
-	graphic_write_command( LCD_SET_PAGE | 1, B_CS1 | B_CS2 );
-	graphic_write_data( 0xFF, B_CS1 | B_CS2 );
+	graphic_clear_screen();
+	for(i = 0; i < 128; i++)
+		pixel(i, 10, 1);						//rita en linje
+
+	for(i = 0; i < 64; i++)					//rita en vertikal linje
+		pixel(10, i, 1);
+	delay_milli(500);
+	for(i = 0; i < 128; i++)
+		pixel(i, 10, 0);
+	for(i = 0; i < 64; i++)
+		pixel(10, i, 0);
 	return 0;
 	
 }
