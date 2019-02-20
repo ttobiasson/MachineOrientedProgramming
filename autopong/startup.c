@@ -68,6 +68,32 @@ void delay_milli(unsigned int ms){
     
 }
 typedef unsigned char uint8_t;
+typedef struct tPoint{
+	unsigned char x;
+	unsigned char y;
+}POINT;
+#define MAX_POINTS 20
+typedef struct tGeometry{
+	int numPoints;
+	int sizeX;
+	int sizeY;
+	POINT px[ MAX_POINTS ];
+} GEOMETRY, *PGEOMETRY;
+GEOMETRY ball_geometry = {
+	12,	//numpoints
+	4,4, //size x and size y
+	{{0,1},{0,2},{1,0},{1,1},{1,2},{1,3},{2,0},{2,1},{2,2},{2,3},{3,1},{3,2}}
+};
+typedef struct tObj{
+	PGEOMETRY geo;
+	int dirx, diry;
+	int posx, posy;
+	void (* draw ) (struct tObj *);
+	void (* clear ) (struct tObj *);
+	void (* move ) (struct tObj *);
+	void (* set_speed ) (struct tObj *, int, int);
+}OBJECT, *POBJECT;
+
 
 void graphic_ctrl_bit_set(uint8_t x){
 	*PORT_ODR_LOW |= x;
@@ -229,6 +255,50 @@ void pixel(unsigned x, unsigned y, unsigned set){
 	}
 	graphic_write_data(mask, controller);
 }
+void set_object_speed(POBJECT object, int speedx, int speedy){
+	
+}
+void draw_object(POBJECT object){
+	int i, j;
+	for(i = 0; i < ( object->geo->sizeY ); i++){
+		for(j =0; j < ( object->geo->sizeX ); j++){
+			pixel( object->posx, object->posy,1 );
+		}
+	}
+}
+void clear_object(POBJECT object){
+	int i, j;
+	for(i = 0; i < ( object->geo->sizeY ); i++){
+		for(j =0; j < ( object->geo->sizeX ); j++){
+			pixel( object->posx, object->posy,0 );
+		}
+	}
+}
+void move_object(POBJECT object){
+	clear_object(object);
+	int newXPos = object->dirx + object->posx;
+	int newYPos = object->diry + object->posy;
+	
+	if( newXPos < 1)
+		object->dirx = ~( object->dirx );
+	if( newXPos > 128 && object->geo->sizeX > 128 )
+		object->dirx = ~( object->dirx );
+	if( newYPos < 1)
+		object->diry = ~( object->diry );
+	if( newYPos > 64 && object->geo->sizeY > 64 )
+		object->diry = ~( object->diry );
+	draw_object(object);
+}
+static OBJECT ball = {
+	&ball_geometry,
+	0,0,
+	1,1,
+	draw_object,
+	clear_object,
+	move_object,
+	set_object_speed
+};
+
 void graphic_initialize(void){
 	graphic_ctrl_bit_set(B_E);
 	delay_micro(10);
@@ -255,7 +325,7 @@ int main(void){
 	unsigned i;
 	init_app();
 	graphic_initialize();
-	//graphic_clear_screen();
+	graphic_clear_screen();
 	for(i = 0; i < 128; i++)
 		pixel(i, 10, 1);						//rita en linje
 
