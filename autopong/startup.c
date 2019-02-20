@@ -248,7 +248,7 @@ void pixel(unsigned x, unsigned y, unsigned set){
 	graphic_write_command(LCD_SET_PAGE | index, controller);
 	c = graphic_read_data(controller);
 	graphic_write_command(LCD_SET_ADD | x, controller);
-	if(set){
+	if(set == 1){
 		mask = mask | c;
 	}else{
 		mask = mask & c;
@@ -256,36 +256,31 @@ void pixel(unsigned x, unsigned y, unsigned set){
 	graphic_write_data(mask, controller);
 }
 void set_object_speed(POBJECT object, int speedx, int speedy){
-	
+	object->dirx = speedx;
+	object->diry = speedy;
 }
 void draw_object(POBJECT object){
-	int i, j;
-	for(i = 0; i < ( object->geo->sizeY ); i++){
-		for(j =0; j < ( object->geo->sizeX ); j++){
-			pixel( object->posx, object->posy,1 );
-		}
+	for(int i = 0; i < object->geo->numPoints; i++){
+			pixel( object->geo->px[i].x+object->posx, object->geo->px[i].y+object->posy,1 );
 	}
 }
 void clear_object(POBJECT object){
-	int i, j;
-	for(i = 0; i < ( object->geo->sizeY ); i++){
-		for(j =0; j < ( object->geo->sizeX ); j++){
-			pixel( object->posx, object->posy,0 );
-		}
+	for(int i = 0; i < object->geo->numPoints; i++){
+			pixel( object->geo->px[i].x+object->posx, object->geo->px[i].y+object->posy,0 );
 	}
 }
 void move_object(POBJECT object){
 	clear_object(object);
-	int newXPos = object->dirx + object->posx;
-	int newYPos = object->diry + object->posy;
+	object->posx = object->dirx + object->posx;
+	object->posy = object->diry + object->posy;
 	
-	if( newXPos < 1)
+	if( object->posx < 1)
 		object->dirx = ~( object->dirx );
-	if( newXPos > 128 && object->geo->sizeX > 128 )
+	if( object->posx > 128 || object->geo->sizeX > 128 )
 		object->dirx = ~( object->dirx );
-	if( newYPos < 1)
+	if( object->posy < 1)
 		object->diry = ~( object->diry );
-	if( newYPos > 64 && object->geo->sizeY > 64 )
+	if( object->posy > 64 || object->geo->sizeY > 64 )
 		object->diry = ~( object->diry );
 	draw_object(object);
 }
@@ -321,21 +316,16 @@ void init_app(void){
     *PORT_OSPEEDR   =0x55555555;
 }
 
-int main(void){
-	unsigned i;
+int main(int argc, char **argv){
+	POBJECT p = &ball;
 	init_app();
 	graphic_initialize();
-	graphic_clear_screen();
-	for(i = 0; i < 128; i++)
-		pixel(i, 10, 1);						//rita en linje
-
-	for(i = 0; i < 64; i++)					//rita en vertikal linje
-		pixel(10, i, 1);
-	delay_milli(500);
-	for(i = 0; i < 128; i++)
-		pixel(i, 10, 0);
-	for(i = 0; i < 64; i++)
-		pixel(10, i, 0);
+	//graphic_clear_screen();
+	p->set_speed( p, 15, 10 );
+	while(1){
+		p->move( p );
+		//delay_milli(40);
+	}
 	return 0;
 	
 }
