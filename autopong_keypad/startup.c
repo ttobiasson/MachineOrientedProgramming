@@ -2,8 +2,16 @@
  * 	startup.c
  *
  */
+#define PORT_BASE_D 0x40020C00
 #define PORT_BASE_E 0x40021000
 		/* Definiera word-adresser för initiering*/
+#define PORT_MODER_D	((volatile unsigned int*)PORT_BASE_D)
+#define PORT_OTYPER_D	((volatile unsigned short*)PORT_BASE_D+0x04)
+#define PORT_PUPDR_D	((volatile unsigned int*)PORT_BASE_D+0x0C)
+#define PORT_D_IDR_HIGH 	((volatile unsigned char*) PORT_BASE_D+0x11)
+#define PORT_D_ODR_HIGH ((volatile unsigned char*)PORT_BASE_D+0x15)
+
+
 #define PORT_MODER 		((volatile unsigned int*)PORT_BASE_E)
 #define PORT_OTYPER 	((volatile unsigned short*) PORT_BASE_E+0x04)
 #define PORT_OSPEEDR    ((volatile unsigned int*) PORT_BASE_E+0x08)
@@ -293,7 +301,45 @@ static OBJECT ball = {
 	move_object,
 	set_object_speed
 };
+//----------------------------------------------------KEYPAD-RELATED
 
+void activateRow(int row){
+ 
+    switch(row){
+        case 1: *PORT_D_ODR_HIGH = 0x10; break;
+        case 2: *PORT_D_ODR_HIGH = 0x20; break;
+        case 3: *PORT_D_ODR_HIGH = 0x40; break;
+        case 4: *PORT_D_ODR_HIGH = 0x80; break;
+        case 0: *PORT_D_ODR_HIGH = 0x00; break;
+    }
+}
+int readColumn(void){
+    unsigned char c;
+    c = *PORT_D_IDR_HIGH;
+    if( c & 0x8) return 4;
+    if( c & 0x4) return 3;
+    if( c & 0x2) return 2;
+    if( c & 0x1) return 1;
+    return 0;
+        
+}
+
+    
+unsigned char keyb(void){
+	unsigned char key[]= {1,2,3,0xA,4,5,6,0xB,7,8,9,0xC,0xE,0,0xF,0xD};
+    int row, col;
+    for(row = 1; row <=4; row++){
+        activateRow(row);
+        if((col = readColumn()))
+        {
+            activateRow(0);
+            return key[4*(row-1)+(col-1)];
+        }
+    }
+    activateRow(0);
+	return 0xFF;
+}
+//---------------------------------------------------------------------
 void graphic_initialize(void){
 	graphic_ctrl_bit_set(B_E);
 	delay_micro(10);
@@ -314,6 +360,9 @@ void init_app(void){
 	*PORT_MODER 	=0x55555555;
 	*PORT_OTYPER 	=0x0000;
     *PORT_OSPEEDR   =0x55555555;
+	*PORT_MODER_D  = 0x55005555;
+    *PORT_OTYPER_D = 0x0F;
+    *PORT_PUPDR_D  = 0x00AA;
 }
 
 int main(int argc, char **argv){
@@ -321,7 +370,7 @@ int main(int argc, char **argv){
 	POBJECT p = &ball;
 	init_app();
 	graphic_initialize();
-	graphic_clear_screen();
+	//graphic_clear_screen();
 	
 	while(1){
 		p->move(p);
