@@ -321,10 +321,10 @@ int main(int argc, char **argv){
 	init_app();
 	graphic_initialize();
 	//graphic_clear_screen();
-	p->set_speed( p, 15, 10 );
+	p->set_speed( p, 4, 1 );
 	while(1){
 		p->move( p );
-		//delay_milli(40);
+		delay_milli(40);
 	}
 	return 0;
 	
