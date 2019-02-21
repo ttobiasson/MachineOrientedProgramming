@@ -5,7 +5,8 @@
   <Project Name="7seg" Path="7seg/7seg.project" Active="No"/>
   <Project Name="asciidisplay" Path="asciidisplay/asciidisplay.project" Active="No"/>
   <Project Name="graphicdisplay" Path="graphicdisplay/graphicdisplay.project" Active="No"/>
-  <Project Name="autopong" Path="autopong/autopong.project" Active="Yes"/>
+  <Project Name="autopong" Path="autopong/autopong.project" Active="No"/>
+  <Project Name="autopong_keypad" Path="autopong_keypad/autopong_keypad.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment>GccArmDir = /usr/local/gcc-arm
@@ -16,6 +17,7 @@
       <Project Name="7seg" ConfigName="Debug"/>
       <Project Name="graphicdisplay" ConfigName="Debug"/>
       <Project Name="autopong" ConfigName="Debug"/>
+      <Project Name="autopong_keypad" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Environment/>
@@ -25,6 +27,7 @@
       <Project Name="7seg" ConfigName="Release"/>
       <Project Name="graphicdisplay" ConfigName="Release"/>
       <Project Name="autopong" ConfigName="Release"/>
+      <Project Name="autopong_keypad" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>
