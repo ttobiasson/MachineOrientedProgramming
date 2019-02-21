@@ -374,13 +374,13 @@ int main(int argc, char **argv){
 	
 	while(1){
 		p->move(p);
-		delay_milli(40);
+		//delay_milli(40);
 		c = keyb();
 		switch(c){
-			case 6: p->set_speed( p, 2, 0 ); break;
-			case 4: p->set_speed( p,-2, 0 ); break;
-			case 2: p->set_speed( p, 0,-2 ); break;
-			case 8: p->set_speed( p, 0, 2 ); break;
+			case 6: p->set_speed( p, 20, 0 ); break;
+			case 4: p->set_speed( p,-20, 0 ); break;
+			case 2: p->set_speed( p, 0,-20 ); break;
+			case 8: p->set_speed( p, 0, 20 ); break;
 		}
 	}
 	return 0;

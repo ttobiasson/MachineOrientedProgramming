@@ -2359,7 +2359,7 @@
  369:/home/tom/Documents/WORK/MachineOrientedProgramming/autopong_keypad/startup.c **** 	char c;
  370:/home/tom/Documents/WORK/MachineOrientedProgramming/autopong_keypad/startup.c **** 	POBJECT p = &ball;
  2018              		.loc 1 370 0
- 2019 08ba 204B     		ldr	r3, .L130
+ 2019 08ba 1E4B     		ldr	r3, .L130
  2020 08bc FB60     		str	r3, [r7, #12]
  371:/home/tom/Documents/WORK/MachineOrientedProgramming/autopong_keypad/startup.c **** 	init_app();
  2021              		.loc 1 371 0
@@ -2379,87 +2379,84 @@
  2030 08cc 1000     		movs	r0, r2
  2031 08ce 9847     		blx	r3
  2032              	.LVL0:
- 377:/home/tom/Documents/WORK/MachineOrientedProgramming/autopong_keypad/startup.c **** 		delay_milli(40);
- 2033              		.loc 1 377 0
- 2034 08d0 2820     		movs	r0, #40
- 2035 08d2 FFF7FEFF 		bl	delay_milli
+ 377:/home/tom/Documents/WORK/MachineOrientedProgramming/autopong_keypad/startup.c **** 		//delay_milli(40);
  378:/home/tom/Documents/WORK/MachineOrientedProgramming/autopong_keypad/startup.c **** 		c = keyb();
- 2036              		.loc 1 378 0
- 2037 08d6 0B25     		movs	r5, #11
- 2038 08d8 7C19     		adds	r4, r7, r5
- 2039 08da FFF7FEFF 		bl	keyb
- 2040 08de 0300     		movs	r3, r0
- 2041 08e0 2370     		strb	r3, [r4]
+ 2033              		.loc 1 378 0
+ 2034 08d0 0B25     		movs	r5, #11
+ 2035 08d2 7C19     		adds	r4, r7, r5
+ 2036 08d4 FFF7FEFF 		bl	keyb
+ 2037 08d8 0300     		movs	r3, r0
+ 2038 08da 2370     		strb	r3, [r4]
  379:/home/tom/Documents/WORK/MachineOrientedProgramming/autopong_keypad/startup.c **** 		switch(c){
- 2042              		.loc 1 379 0
- 2043 08e2 7B19     		adds	r3, r7, r5
- 2044 08e4 1B78     		ldrb	r3, [r3]
- 2045 08e6 042B     		cmp	r3, #4
- 2046 08e8 0FD0     		beq	.L124
- 2047 08ea 02DC     		bgt	.L125
- 2048 08ec 022B     		cmp	r3, #2
- 2049 08ee 14D0     		beq	.L126
- 2050 08f0 22E0     		b	.L123
- 2051              	.L125:
- 2052 08f2 062B     		cmp	r3, #6
- 2053 08f4 02D0     		beq	.L127
- 2054 08f6 082B     		cmp	r3, #8
- 2055 08f8 17D0     		beq	.L128
- 2056 08fa 1DE0     		b	.L123
- 2057              	.L127:
- 380:/home/tom/Documents/WORK/MachineOrientedProgramming/autopong_keypad/startup.c **** 			case 6: p->set_speed( p, 2, 0 ); break;
- 2058              		.loc 1 380 0
- 2059 08fc FB68     		ldr	r3, [r7, #12]
- 2060 08fe 1B6A     		ldr	r3, [r3, #32]
- 2061 0900 F868     		ldr	r0, [r7, #12]
- 2062 0902 0022     		movs	r2, #0
- 2063 0904 0221     		movs	r1, #2
- 2064 0906 9847     		blx	r3
- 2065              	.LVL1:
- 2066 0908 16E0     		b	.L123
- 2067              	.L124:
- 381:/home/tom/Documents/WORK/MachineOrientedProgramming/autopong_keypad/startup.c **** 			case 4: p->set_speed( p,-2, 0 ); break;
- 2068              		.loc 1 381 0
- 2069 090a FB68     		ldr	r3, [r7, #12]
- 2070 090c 1B6A     		ldr	r3, [r3, #32]
- 2071 090e 0222     		movs	r2, #2
- 2072 0910 5142     		rsbs	r1, r2, #0
- 2073 0912 F868     		ldr	r0, [r7, #12]
- 2074 0914 0022     		movs	r2, #0
- 2075 0916 9847     		blx	r3
- 2076              	.LVL2:
- 2077 0918 0EE0     		b	.L123
- 2078              	.L126:
- 382:/home/tom/Documents/WORK/MachineOrientedProgramming/autopong_keypad/startup.c **** 			case 2: p->set_speed( p, 0,-2 ); break;
- 2079              		.loc 1 382 0
- 2080 091a FB68     		ldr	r3, [r7, #12]
- 2081 091c 1B6A     		ldr	r3, [r3, #32]
- 2082 091e 0222     		movs	r2, #2
- 2083 0920 5242     		rsbs	r2, r2, #0
- 2084 0922 F868     		ldr	r0, [r7, #12]
- 2085 0924 0021     		movs	r1, #0
- 2086 0926 9847     		blx	r3
- 2087              	.LVL3:
- 2088 0928 06E0     		b	.L123
- 2089              	.L128:
- 383:/home/tom/Documents/WORK/MachineOrientedProgramming/autopong_keypad/startup.c **** 			case 8: p->set_speed( p, 0, 2 ); break;
- 2090              		.loc 1 383 0
- 2091 092a FB68     		ldr	r3, [r7, #12]
- 2092 092c 1B6A     		ldr	r3, [r3, #32]
- 2093 092e F868     		ldr	r0, [r7, #12]
- 2094 0930 0222     		movs	r2, #2
- 2095 0932 0021     		movs	r1, #0
- 2096 0934 9847     		blx	r3
- 2097              	.LVL4:
- 2098 0936 C046     		nop
- 2099              	.L123:
- 376:/home/tom/Documents/WORK/MachineOrientedProgramming/autopong_keypad/startup.c **** 		delay_milli(40);
- 2100              		.loc 1 376 0
- 2101 0938 C5E7     		b	.L129
- 2102              	.L131:
- 2103 093a C046     		.align	2
- 2104              	.L130:
- 2105 093c 34000000 		.word	ball
- 2106              		.cfi_endproc
- 2107              	.LFE25:
- 2109              	.Letext0:
+ 2039              		.loc 1 379 0
+ 2040 08dc 7B19     		adds	r3, r7, r5
+ 2041 08de 1B78     		ldrb	r3, [r3]
+ 2042 08e0 042B     		cmp	r3, #4
+ 2043 08e2 0FD0     		beq	.L124
+ 2044 08e4 02DC     		bgt	.L125
+ 2045 08e6 022B     		cmp	r3, #2
+ 2046 08e8 14D0     		beq	.L126
+ 2047 08ea 22E0     		b	.L123
+ 2048              	.L125:
+ 2049 08ec 062B     		cmp	r3, #6
+ 2050 08ee 02D0     		beq	.L127
+ 2051 08f0 082B     		cmp	r3, #8
+ 2052 08f2 17D0     		beq	.L128
+ 2053 08f4 1DE0     		b	.L123
+ 2054              	.L127:
+ 380:/home/tom/Documents/WORK/MachineOrientedProgramming/autopong_keypad/startup.c **** 			case 6: p->set_speed( p, 20, 0 ); break;
+ 2055              		.loc 1 380 0
+ 2056 08f6 FB68     		ldr	r3, [r7, #12]
+ 2057 08f8 1B6A     		ldr	r3, [r3, #32]
+ 2058 08fa F868     		ldr	r0, [r7, #12]
+ 2059 08fc 0022     		movs	r2, #0
+ 2060 08fe 1421     		movs	r1, #20
+ 2061 0900 9847     		blx	r3
+ 2062              	.LVL1:
+ 2063 0902 16E0     		b	.L123
+ 2064              	.L124:
+ 381:/home/tom/Documents/WORK/MachineOrientedProgramming/autopong_keypad/startup.c **** 			case 4: p->set_speed( p,-20, 0 ); break;
+ 2065              		.loc 1 381 0
+ 2066 0904 FB68     		ldr	r3, [r7, #12]
+ 2067 0906 1B6A     		ldr	r3, [r3, #32]
+ 2068 0908 1422     		movs	r2, #20
+ 2069 090a 5142     		rsbs	r1, r2, #0
+ 2070 090c F868     		ldr	r0, [r7, #12]
+ 2071 090e 0022     		movs	r2, #0
+ 2072 0910 9847     		blx	r3
+ 2073              	.LVL2:
+ 2074 0912 0EE0     		b	.L123
+ 2075              	.L126:
+ 382:/home/tom/Documents/WORK/MachineOrientedProgramming/autopong_keypad/startup.c **** 			case 2: p->set_speed( p, 0,-20 ); break;
+ 2076              		.loc 1 382 0
+ 2077 0914 FB68     		ldr	r3, [r7, #12]
+ 2078 0916 1B6A     		ldr	r3, [r3, #32]
+ 2079 0918 1422     		movs	r2, #20
+ 2080 091a 5242     		rsbs	r2, r2, #0
+ 2081 091c F868     		ldr	r0, [r7, #12]
+ 2082 091e 0021     		movs	r1, #0
+ 2083 0920 9847     		blx	r3
+ 2084              	.LVL3:
+ 2085 0922 06E0     		b	.L123
+ 2086              	.L128:
+ 383:/home/tom/Documents/WORK/MachineOrientedProgramming/autopong_keypad/startup.c **** 			case 8: p->set_speed( p, 0, 20 ); break;
+ 2087              		.loc 1 383 0
+ 2088 0924 FB68     		ldr	r3, [r7, #12]
+ 2089 0926 1B6A     		ldr	r3, [r3, #32]
+ 2090 0928 F868     		ldr	r0, [r7, #12]
+ 2091 092a 1422     		movs	r2, #20
+ 2092 092c 0021     		movs	r1, #0
+ 2093 092e 9847     		blx	r3
+ 2094              	.LVL4:
+ 2095 0930 C046     		nop
+ 2096              	.L123:
+ 376:/home/tom/Documents/WORK/MachineOrientedProgramming/autopong_keypad/startup.c **** 		//delay_milli(40);
+ 2097              		.loc 1 376 0
+ 2098 0932 C8E7     		b	.L129
+ 2099              	.L131:
+ 2100              		.align	2
+ 2101              	.L130:
+ 2102 0934 34000000 		.word	ball
+ 2103              		.cfi_endproc
+ 2104              	.LFE25:
+ 2106              	.Letext0:
